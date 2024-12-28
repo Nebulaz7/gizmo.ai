@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gizmo.ai</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">  
+        <h1>Gizmo.ai</h1>
+      </div>
+      <nav>
+        <ul id="menu">
+          <li><a href="#" class="onpage">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="index.html">Sign Out</a></li>
+        </ul> 
+      </nav>
+    </header>
+
+    <div class="home">
+        <h2>Welcome <span id="userId">username</span>, let's create.. </h2>
+        <br />
+      <button id="startButton"><span class="material-symbols-outlined icon">
+  mic
+</span> </button>
+      <button id="clear"><span class="material-symbols-outlined">
+  delete_forever
+</span></button>
+      <select id="language" onchange="recognition.lang = this.value">
+        <option value="en-US">English</option>
+      </select>
+      <div class="outputSec">
+      <div id="outputText" contenteditable="true"></div>
+      <br />
+      <button id="generateImg">Generate image</button>
+    </div>
+      <br />
+       <div id="card">
+      <iframe id="outputImage" src=""></iframe>
+      </div> 
+ 
+  <div class="popup-overlay" id="popupOverlay">
+   <div class="popup-card">
+     <button class="close-btn" id="closePopup"><span class="material-symbols-outlined">
+  close
+</span></button>
+     <img id="popupImage" src="" alt="Generated Image">
+     <p class="prompt-text" id="promptDescription"></p>
+     <div class="action-buttons">
+       <button id="downloadBtn" class="download-btn">
+         <span class="material-symbols-outlined ico">
+  download
+</span> Download
+       </button>
+       <button id="likeBtn" class="like-btn">
+         <span class="material-symbols-outlined icon">
+  favorite
+</span> Like
+       </button>
+     </div>
+   </div>
+ </div>
+
+    </div>
+    
+    <script src="js/main.js"></script>
+  </body>
+</html>
