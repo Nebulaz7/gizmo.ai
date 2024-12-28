@@ -1,9 +1,4 @@
 // joshua codes
-import config from './config.js';
-
-function getApiKey() {
-  return atob(config.apiKey.split('').reverse().join(''));
-}
 
 const userData = JSON.parse(localStorage.getItem('gizmoUser'));
 const userName = userData ? userData.name : 'Guest';
@@ -78,7 +73,7 @@ async function generateImage(prompt, apiKey) {
 async function main() {
   try {
     generateButton.textContent = 'Generating...';
-    const apiKey = getApiKey();
+    const apiKey = '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';
     const imageData = await generateImage(transcript, apiKey);
     console.log('Generated image URL:', imageData.data[0].url);
     outputImage.src = imageData.data[0].url;
