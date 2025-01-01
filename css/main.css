@@ -108,16 +108,32 @@ button:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
 }
-
+/* stlye to disable button and button when hovered on */
 button:disabled {
-  opacity: 0.3;
+  opacity: 0.2;
   cursor: not-allowed;
+}
+button:disabled:hover {
+ background: rgba(5, 20, 175, 0.2);
+ color: var(--light);
+ padding: 12px 24px;
+ border: 1px solid var(--accent);
+ border-radius: 50px;
+ cursor: not-allowed;
+ font-size: 16px;
+ backdrop-filter: blur(5px);
+ box-shadow: 0 0 20px rgba(0, 247, 255, 0.1);
+  
+}
+
+.btn-div {
+   display: flex;
+   position: relative;
+   gap: 10px;
 }
 
 /* Output Section */
 .outputSec {
-  // display: grid;
-  // grid-template-columns: 1fr 1fr;
   gap: 30px;
   margin-top: 40px;
 }
@@ -131,6 +147,7 @@ button:disabled {
   backdrop-filter: blur(5px);
   transition: all 0.3s ease;
   box-shadow: 0 0 30px rgba(0, 247, 255, 0.1);
+  outline: none;
 }
 
 #outputText:focus {
@@ -142,8 +159,8 @@ button:disabled {
   border: 1px solid rgba(0, 247, 255, 0.2);
   border-radius: 15px;
   overflow: hidden;
-  height: 1024px;
-  width: 1024px;
+  height: 4px;
+  width: 4px;
   transition: all 0.3s ease;
   animation: pulse 2s infinite;
 } 
