@@ -36,6 +36,7 @@ const recognition = new(window.SpeechRecognition ||
 recognition.lang = LANG;
 recognition.onresult = (event) => {
   transcript = event.results[0][0].transcript;
+  document.querySelector('.placeholder').textContent = '';
   outputDiv.textContent += ` ${transcript}`;
   generateButton.disabled = false;
 };
@@ -75,7 +76,7 @@ async function generateImage(prompt, apiKey) {
 async function main() {
   try {
     generateButton.textContent = 'Generating...';
-    const apiKey = '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';
+    const apiKey = 'sk-ijklmnopqrstuvwxijklmnopqrstuvwxijklmnop';
     const imageData = await generateImage(transcript, apiKey);
     console.log('Generated image URL:', imageData.data[0].url);
     outputImage.src = imageData.data[0].url;
@@ -107,23 +108,86 @@ graphic_eq
 };
   
     // Download image
-    downloadBtn.onclick = async () => {
-      try {
-        const response = await fetch(imageData.data[0].url);
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `generated-image-${Date.now()}.png`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      } catch (error) {
-        console.error('Download failed:', error);
-        alert('Failed to download image');
-      }
-    };
+    
+    // Function to handle image download
+const handleImageDownload = async (imageUrl) => {
+  if (!imageUrl) {
+    throw new Error('No image URL provided');
+  }
+
+  try {
+    
+    const response = await fetch(imageUrl, {
+      headers: {
+        'Accept': 'image/*'
+      },
+      mode: 'cors'
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    // Create download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `generated-image-${Date.now()}.png`;
+
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+
+    // Cleanup
+    setTimeout(() => {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 100);
+
+    return true;
+  } catch (error) {
+    console.error('Download failed:', error);
+    throw error;
+  }
+};
+
+// Using with the download button
+downloadBtn.onclick = async () => {
+  try {
+    const imageUrl = imageData?.data?.[0]?.url;
+    if (!imageUrl) {
+      throw new Error('Image URL not found');
+    }
+
+    await handleImageDownload(imageUrl);
+  } catch (error) {
+    console.error('Download failed:', error);
+    alert(`Failed to download image: ${error.message}`);
+  }
+};
+    
+    
+    
+    
+    // downloadBtn.onclick = async () => {
+    //   try {
+    //     const response = await fetch(imageData.data[0].url);
+    //     const blob = await response.blob();
+    //     const url = window.URL.createObjectURL(blob);
+    //     const a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = `generated-image-${Date.now()}.png`;
+    //     document.body.appendChild(a);
+    //     a.click();
+    //     document.body.removeChild(a);
+    //     window.URL.revokeObjectURL(url);
+    //   } catch (error) {
+    //     console.error('Download failed:', error);
+    //     alert('Failed to download image');
+    //   }
+    // };
     
     // Like button toggle
     likeBtn.onclick = () => {

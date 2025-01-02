@@ -132,6 +132,8 @@ button:disabled:hover {
    gap: 10px;
 }
 
+
+
 /* Output Section */
 .outputSec {
   gap: 30px;
@@ -164,6 +166,12 @@ button:disabled:hover {
   transition: all 0.3s ease;
   animation: pulse 2s infinite;
 } 
+
+.placeholder {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+}
 
 .popup-overlay {
   position: fixed;
