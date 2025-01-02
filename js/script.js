@@ -37,8 +37,8 @@ getStartedBtn.addEventListener('click', () => {
     return;
   }
 
-  if (userName.length < 2) {
-    showError('Name must be at least 2 characters long');
+  if (userName.length < 3) {
+    showError('Name must be at least 3 characters long');
     return;
   }
 

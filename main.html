@@ -14,14 +14,13 @@
       <nav>
         <ul id="menu">
           <li><a href="#" class="onpage">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="index.html">Sign Out</a></li>
+          <li><a href="https://gizmo-ai.vercel.app/README.md">About</a></li>
+          <li><a href="index.html" onclick="handleSignOut()" >Sign Out</a></li>
         </ul> 
       </nav>
     </header>
-
     <div class="home">
-        <h2>Welcome <span id="userId">username</span>, let's create :-)... </h2>
+        <h2>Welcome <span id="userId">username</span>, let's create <span class="smiley">:-)</span>... </h2>
         <br />
         <div class="btn-div">
       <button id="startButton"><span class="material-symbols-outlined icon">
@@ -33,12 +32,22 @@
       <select id="language" onchange="recognition.lang = this.value">
         <option value="en-US">English</option>
       </select>
+      <select id="modelSelect">
+       <option value="dall-e-3">DALL-E 3</option>
+        <option value="dall-e-2">DALL-E 2</option>
+      </select>
         </div>
+
+     <div class="history-column">
+      <h2>Liked Images</h2>
+      <div id="likedImages"></div>
+    </div>
       <div class="outputSec">
       <div id="outputText" contenteditable="true">
         <p class="placeholder">Say something to start creating an image...</p>
       </div>
       <br />
+      
       <button id="generateImg">Generate image</button>
     </div>
       <br />

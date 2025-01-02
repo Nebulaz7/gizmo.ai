@@ -5,6 +5,9 @@
 const userData = JSON.parse(localStorage.getItem('gizmoUser'));
 const userName = userData ? userData.name : 'Guest';
 
+
+
+
 document.getElementById('userId').innerText = userName;
 
 const startButton = document.getElementById('startButton');
@@ -12,6 +15,7 @@ const outputDiv = document.getElementById('outputText');
 const outputImage = document.getElementById('outputImage');
 const clearButton = document.getElementById('clear');
 const generateButton = document.getElementById('generateImg');
+const modelSelect = document.getElementById('modelSelect');
 
 //setting up generate button 
 generateButton.disabled = true;
@@ -57,7 +61,7 @@ async function generateImage(prompt, apiKey) {
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'dall-e-3',
+        model: modelSelect.value,
         prompt: prompt,
         n: 1,
         size: '1024x1024'
@@ -76,11 +80,11 @@ async function generateImage(prompt, apiKey) {
 async function main() {
   try {
     generateButton.textContent = 'Generating...';
-    const apiKey = 'sk-ijklmnopqrstuvwxijklmnopqrstuvwxijklmnop';
+    const apiKey = '';
     const imageData = await generateImage(transcript, apiKey);
     console.log('Generated image URL:', imageData.data[0].url);
     outputImage.src = imageData.data[0].url;
-    outputDiv.textContent = '';
+    // outputDiv.textContent = '';
     const popupOverlay = document.getElementById('popupOverlay');
     const popupImage = document.getElementById('popupImage');
     const promptDescription = document.getElementById('promptDescription');
@@ -96,14 +100,20 @@ graphic_eq
     generateButton.textContent = 'Generate Image';
     popupOverlay.classList.add('active');
     
-      closePopup.onclick = () => {
-    popupOverlay.classList.remove('active');
-  };
+   closePopup.onclick = () => {
+  popupOverlay.classList.remove('active');
+  generateButton.disabled = false;
+  location.reload();
+  // outputDiv.textContent = '';
+};
 
     // TO close popup
-   popupOverlay.onclick = (e) => {
+ popupOverlay.onclick = (e) => {
   if (e.target === popupOverlay) {
     popupOverlay.classList.remove('active');
+    generateButton.disabled = false;
+    location.reload();
+  //  outputDiv.textContent = '';
   }
 };
   
@@ -189,16 +199,21 @@ downloadBtn.onclick = async () => {
     //   }
     // };
     
+   
+    
     // Like button toggle
-    likeBtn.onclick = () => {
-      likeBtn.classList.toggle('active');
-      const icon = likeBtn.querySelector('.icon');
-      icon.innerHTML = likeBtn.classList.contains('active') ? `<span class="material-symbols-outlined">
-favorite
-</span> ` : `<span class="material-symbols-outlined">
-favorite
-</span>`;
-    };
+   likeBtn.onclick = () => {
+  likeBtn.classList.toggle('active');
+  const icon = likeBtn.querySelector('.icon');
+  icon.innerHTML = likeBtn.classList.contains('active') 
+    ? '<span class="material-symbols-outlined">favorite</span>' 
+    : '<span class="material-symbols-outlined">favorite</span>';
+    
+  if (likeBtn.classList.contains('active')) {
+    saveLikedImage(popupImage.src, transcript);
+  }
+};
+
     
    
   } catch (error) {
@@ -216,3 +231,42 @@ function generate() {
   }
 }
 // editting for generate btn
+
+ // saving liked image to history function
+    
+    function saveLikedImage(imageUrl, prompt) {
+  const likedImages = JSON.parse(localStorage.getItem('likedImages') || '[]');
+  likedImages.unshift({ url: imageUrl, prompt, timestamp: Date.now() });
+  localStorage.setItem('likedImages', JSON.stringify(likedImages));
+  updateLikedImagesDisplay();
+}
+
+function updateLikedImagesDisplay() {
+  const likedImagesDiv = document.getElementById('likedImages');
+  const likedImages = JSON.parse(localStorage.getItem('likedImages') || '[]');
+
+  likedImagesDiv.innerHTML = likedImages.map(img => `
+    <div class="history-item">
+      <img src="${img.url}" alt="Generated Image">
+      <p>${img.prompt}</p>
+      <small>${new Date(img.timestamp).toLocaleString()}</small>
+    </div>
+  `).join('');
+}
+    
+
+// Initial load of liked images
+document.addEventListener('DOMContentLoaded', updateLikedImagesDisplay);
+
+function handleSignOut() {
+  if (confirm('Are you sure you want to sign out? This will delete all saved history.')) {
+    localStorage.clear();
+    window.location.href = 'index.html';
+  }
+}
+
+// Add event listener to sign out link
+document.querySelector('a[href="index.html"]').addEventListener('click', (e) => {
+  e.preventDefault();
+  handleSignOut();
+});
